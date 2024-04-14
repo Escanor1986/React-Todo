@@ -1,11 +1,17 @@
 import PropTypes from "prop-types";
 
-function TodoItem({ todo, deleteTodo }) {
+function TodoItem({ todo, deleteTodo, toggleTodo, toggleTodoEdit }) {
   return (
     <li className="mb-10 d-flex flex-row justify-content-center align-items-center p-10">
-      <span className="flex-fill mr-15">{todo.content}</span>
-      <button className="btn btn-primary mr-15">Valider</button>
-      <button className="btn btn-primary mr-15">Modifier</button>
+      <span className="flex-fill">
+        {todo.content} {todo.done && "✅"}
+      </span>
+      <button onClick={toggleTodo} className="btn btn-primary mr-15">
+        Valider
+      </button>
+      <button onClick={toggleTodoEdit} className="btn btn-primary mr-15">
+        Modifier
+      </button>
       <button onClick={deleteTodo} className="btn btn-reverse-primary mr-15">
         Supprimer
       </button>
@@ -16,6 +22,8 @@ function TodoItem({ todo, deleteTodo }) {
 TodoItem.propTypes = {
   todo: PropTypes.object,
   deleteTodo: PropTypes.func,
+  toggleTodo: PropTypes.func,
+  toggleTodoEdit: PropTypes.func,
 };
 
 export default TodoItem;
