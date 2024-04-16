@@ -8,6 +8,7 @@ function TodoList({
   toggleTodo,
   toggleTodoEdit,
   editTodo,
+  toggleSelectedTodo,
 }) {
   return todoList.length ? (
     <ul>
@@ -26,6 +27,7 @@ function TodoList({
             deleteTodo={() => deleteTodo(todo.id)}
             toggleTodo={() => toggleTodo(todo.id)}
             toggleTodoEdit={() => toggleTodoEdit(todo.id)}
+            toggleSelectedTodo={() => toggleSelectedTodo(todo.id)}
           />
         )
       )}
@@ -41,6 +43,7 @@ TodoList.propTypes = {
   toggleTodo: PropTypes.func,
   toggleTodoEdit: PropTypes.func,
   editTodo: PropTypes.func,
+  toggleSelectedTodo: PropTypes.func,
 };
 
 export default TodoList;

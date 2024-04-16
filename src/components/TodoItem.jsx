@@ -1,8 +1,23 @@
 import PropTypes from "prop-types";
 
-function TodoItem({ todo, deleteTodo, toggleTodo, toggleTodoEdit }) {
+function TodoItem({
+  todo,
+  deleteTodo,
+  toggleTodo,
+  toggleTodoEdit,
+  toggleSelectedTodo,
+}) {
+  function handleInput(e) {
+    console.log(e.target.checked);
+    toggleSelectedTodo();
+  }
+
   return (
-    <li className="mb-10 d-flex flex-row justify-content-center align-items-center p-10">
+    <li
+      className={`d-flex flex-row justify-content-center align-items-center p-20 ${
+        todo.selected ? "selectedTodo" : ""
+      }`}
+    >
       <div className="d-flex flex-fill justify-around">
         {todo.content} {todo.done && "✅"}
         <span>
@@ -19,6 +34,8 @@ function TodoItem({ todo, deleteTodo, toggleTodo, toggleTodoEdit }) {
       <button onClick={deleteTodo} className="btn btn-reverse-primary mr-15">
         Supprimer
       </button>
+      <label>{!todo.selected ? "Select Todo" : "Todo Selected"}</label>
+      <input onInput={handleInput} type="checkbox" name="selected" />
     </li>
   );
 }
@@ -28,6 +45,7 @@ TodoItem.propTypes = {
   deleteTodo: PropTypes.func,
   toggleTodo: PropTypes.func,
   toggleTodoEdit: PropTypes.func,
+  toggleSelectedTodo: PropTypes.func,
 };
 
 export default TodoItem;
