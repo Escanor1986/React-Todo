@@ -2,12 +2,23 @@ import TodoItem from "./TodoItem";
 import EditTodo from "./EditTodo";
 import PropTypes from "prop-types";
 
-function TodoList({ todoList, deleteTodo, toggleTodo, toggleTodoEdit }) {
+function TodoList({
+  todoList,
+  deleteTodo,
+  toggleTodo,
+  toggleTodoEdit,
+  editTodo,
+}) {
   return todoList.length ? (
     <ul>
       {todoList.map(todo =>
         todo.edit ? (
-          <EditTodo key={todo.id} todo={todo} />
+          <EditTodo
+            key={todo.id}
+            todo={todo}
+            editTodo={content => editTodo(todo.id, content)}
+            cancelEditTodo={() => toggleTodoEdit(todo.id)}
+          />
         ) : (
           <TodoItem
             key={todo.id}
@@ -29,6 +40,7 @@ TodoList.propTypes = {
   deleteTodo: PropTypes.func,
   toggleTodo: PropTypes.func,
   toggleTodoEdit: PropTypes.func,
+  editTodo: PropTypes.func,
 };
 
 export default TodoList;

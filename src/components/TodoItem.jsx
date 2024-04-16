@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 function TodoItem({ todo, deleteTodo, toggleTodo, toggleTodoEdit }) {
   return (
     <li className="mb-10 d-flex flex-row justify-content-center align-items-center p-10">
-      <span className="flex-fill">
+      <div className="d-flex flex-fill justify-around">
         {todo.content} {todo.done && "✅"}
-      </span>
+        <span>
+          <i className="fa-regular fa-calendar mr-15"></i>
+          {`Tâche créé le : ${todo.date} hrs`}
+        </span>
+      </div>
       <button onClick={toggleTodo} className="btn btn-primary mr-15">
-        Valider
+        {!todo.done ? "A Valider" : "Validée"}
       </button>
       <button onClick={toggleTodoEdit} className="btn btn-primary mr-15">
         Modifier

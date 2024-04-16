@@ -7,11 +7,27 @@ function App() {
   const [todoList, setTodoList] = useState([]);
 
   function addTodo(content) {
+    const actualDate = new Date();
+
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      // timeZoneName: "short",
+    };
+
+    const formatedDate = actualDate.toLocaleDateString("fr-FR", options);
+
     const todo = {
       id: crypto.randomUUID(),
       content,
       done: false,
       edit: false,
+      date: formatedDate,
     };
     setTodoList([...todoList, todo]);
   }
@@ -36,6 +52,14 @@ function App() {
     );
   }
 
+  function editTodo(id, content) {
+    setTodoList(
+      todoList.map(todo =>
+        todo.id === id ? { ...todo, edit: false, content } : todo
+      )
+    );
+  }
+
   return (
     <div className="d-flex flex-row justify-content-center align-items-center p-20">
       {/* <Articles displayArticle={true} /> */}
@@ -47,6 +71,7 @@ function App() {
           deleteTodo={deleteTodo}
           toggleTodo={toggleTodo}
           toggleTodoEdit={toggleTodoEdit}
+          editTodo={editTodo}
         />
       </div>
     </div>
