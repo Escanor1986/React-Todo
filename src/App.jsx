@@ -78,6 +78,15 @@ function App() {
     }
   }
 
+  function deleteAllSelectedTodo() {
+    const updatedTodoList = todoList.filter(
+      todo => !todoToDelete.includes(todo)
+    );
+    setTodoList(updatedTodoList);
+
+    setTodoToDelete([]);
+  }
+
   return (
     <div
       className={`d-flex flex-row justify-content-center align-items-center p-20`}
@@ -99,14 +108,7 @@ function App() {
           <div className="d-flex flex-fill justify-content-center align-items-center">
             <button
               className="selectedTodo p-20 m-15"
-              onClick={() => {
-                const updatedTodoList = todoList.filter(
-                  todo => !todoToDelete.includes(todo)
-                );
-                setTodoList(updatedTodoList);
-
-                setTodoToDelete([]);
-              }}
+              onClick={deleteAllSelectedTodo}
             >
               Supprimer les todos sélectionnées
             </button>
