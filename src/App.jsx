@@ -1,115 +1,88 @@
 // import Articles from "./components/Articles";
-import { useState } from "react";
+import { useReducer } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import themeContext from "./context/Theme";
+import todoReducer from "./reducers/todoReducer";
 
 function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [todoToDelete, setTodoToDelete] = useState([]);
+  const [state, dispatch] = useReducer(todoReducer, {
+    theme: "primary",
+    todoList: [],
+    todoToDelete: [],
+  });
 
   function addTodo(content) {
-    const actualDate = new Date();
-
-    const options = {
-      // weekday: "short",
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      // timeZoneName: "short",
-    };
-
-    const formatedDate = actualDate.toLocaleDateString("fr-FR", options);
-
-    const todo = {
-      id: crypto.randomUUID(),
+    dispatch({
+      type: "ADD_TODO",
       content,
-      done: false,
-      edit: false,
-      selected: false,
-      date: formatedDate,
-    };
-    setTodoList([...todoList, todo]);
+    });
   }
 
   function deleteTodo(id) {
-    setTodoList(todoList.filter(todo => todo.id !== id));
+    dispatch({
+      type: "DELETE_TODO",
+      id,
+    });
   }
 
   function toggleTodo(id) {
-    setTodoList(
-      todoList.map(todo =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
-      )
-    );
+    dispatch({
+      type: "TOGGLE_TODO",
+      id,
+    });
   }
 
   function toggleTodoEdit(id) {
-    setTodoList(
-      todoList.map(todo =>
-        todo.id === id ? { ...todo, edit: !todo.edit } : todo
-      )
-    );
+    dispatch({
+      type: "TOGGLE_EDIT_TODO",
+      id,
+    });
   }
 
   function editTodo(id, content) {
-    setTodoList(
-      todoList.map(todo =>
-        todo.id === id ? { ...todo, edit: false, content } : todo
-      )
-    );
+    dispatch({
+      type: "EDIT_TODO",
+      id,
+      content,
+    });
   }
 
   function toggleSelectedTodo(id) {
-    const updatedTodoList = todoList.map(todo =>
-      todo.id === id ? { ...todo, selected: !todo.selected } : todo
-    );
-    setTodoList(updatedTodoList);
-
-    const updatedTodo = updatedTodoList.find(todo => todo.id === id);
-    if (updatedTodo && updatedTodo.selected) {
-      // Si la todo est sélectionnée, l'ajouter à todoToDelete
-      setTodoToDelete([...todoToDelete, updatedTodo]);
-    } else {
-      // Sinon, la retirer de todoToDelete si elle y est déjà
-      setTodoToDelete(todoToDelete.filter(todo => todo.id !== id));
-    }
+    dispatch({
+      type: "TOGGLE_SELECTED_TODO",
+      id,
+    });
   }
 
   function deleteAllSelectedTodo() {
-    const updatedTodoList = todoList.filter(
-      todo => !todoToDelete.includes(todo)
-    );
-    setTodoList(updatedTodoList);
-
-    setTodoToDelete([]);
+    dispatch({
+      type: "DELETE_ALL_SELECTED_TODO",
+    });
   }
 
-  const [theme, setTheme] = useState("primary");
-
   function handleChange(e) {
-    setTheme(e.target.value);
+    dispatch({
+      type: "SET_THEME",
+      name: e.target.value,
+    });
   }
 
   return (
-    <themeContext.Provider value={theme}>
+    <themeContext.Provider value={state.theme}>
       <div
         className={`d-flex flex-row justify-content-center align-items-center p-20`}
       >
-        {/* <Articles displayArticle={true} /> */}
         <div className="flex flex-fill card p-20">
           <h1 className="mb-20 d-flex flex-row justify-content-center align-items-center">
             <span className="flex-fill">Todo list</span>
             <select
-              value={theme}
+              value={state.theme}
               onChange={handleChange}
               className="select-style"
             >
               <option value="primary" className="option-style">
-                Vert
+                Mauve
               </option>
               <option value="secondary" className="option-style">
                 Bleu
@@ -118,18 +91,18 @@ function App() {
           </h1>
           <AddTodo addTodo={addTodo} />
           <TodoList
-            todoList={todoList}
-            todoToDelete={todoToDelete}
+            todoList={state.todoList}
+            todoToDelete={state.todoToDelete}
             deleteTodo={deleteTodo}
             toggleTodo={toggleTodo}
             toggleTodoEdit={toggleTodoEdit}
             editTodo={editTodo}
             toggleSelectedTodo={toggleSelectedTodo}
           />
-          {todoToDelete.length > 0 ? (
+          {state.todoToDelete.length > 0 ? (
             <div className="d-flex flex-fill justify-content-center align-items-center">
               <button
-                className={`delete-all-todo selectedTodo-${theme} p-20 m-15`}
+                className={`delete-all-todo selectedTodo-${state.theme} p-20 m-15`}
                 onClick={deleteAllSelectedTodo}
               >
                 Supprimer les todos sélectionnées
