@@ -129,7 +129,7 @@ function App() {
           {todoToDelete.length > 0 ? (
             <div className="d-flex flex-fill justify-content-center align-items-center">
               <button
-                className={`selectedTodo-${theme} p-20 m-15`}
+                className={`delete-all-todo selectedTodo-${theme} p-20 m-15`}
                 onClick={deleteAllSelectedTodo}
               >
                 Supprimer les todos sélectionnées

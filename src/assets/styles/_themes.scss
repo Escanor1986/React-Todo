@@ -36,6 +36,7 @@ input {
   border: 1px solid var(--accent);
   padding: 10px 15px;
   outline: none;
+  cursor: pointer;
 }
 
 input::placeholder {
@@ -66,6 +67,7 @@ input::placeholder {
   border-radius: 25px;
   background-color: var(--gray-2);
   margin: 5px 0;
+  cursor: pointer;
 }
 
 .selectedTodo-secondary {
@@ -73,6 +75,13 @@ input::placeholder {
   border-radius: 25px;
   background-color: var(--gray-2);
   margin: 5px 0;
+  cursor: pointer;
+}
+
+.delete-all-todo:hover {
+  border-radius: 4px;
+  border: 4px inset var(--accent);
+  border-radius: 25px;
 }
 
 .appDiv {
@@ -84,13 +93,31 @@ input::placeholder {
   font-size: 16px;
   color: #333333;
 }
+.main:hover {
+  border-radius: 4px;
+  border: 4px inset var(--accent);
+  border-radius: 25px;
+}
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .main {
     flex-direction: column;
   }
 
   .left {
+    margin-bottom: 20px;
+  }
+
+  .right {
+    margin-bottom: 20px;
+  }
+
+  .edit-todo {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-todo > * {
     margin-bottom: 20px;
   }
 }

@@ -25,13 +25,13 @@ export default function EditTodo({ todo, editTodo, cancelEditTodo }) {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center mb-10">
+    <div className="edit-todo d-flex justify-content-center align-items-center mb-10">
       <input
         type="text"
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         value={value}
-        className="mr-15 flex-fill"
+        className="mr-15"
         placeholder="Ajouter une tâche"
       />
       <Button

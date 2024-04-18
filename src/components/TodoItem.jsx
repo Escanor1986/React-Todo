@@ -55,10 +55,9 @@ function TodoItem({
           text={`Supprimer`}
           className={"mr-15"}
         />
-
-        <label className="label-pt">
-          {!todo.selected ? "Select Todo" : "Todo Selected"}
-        </label>
+      </div>
+      <div className="d-flex flex-fill justify-content-center">
+        <label>{!todo.selected ? "Select Todo" : "Todo Selected"}</label>
         <input onInput={handleInput} type="checkbox" name="selected" />
       </div>
     </li>
