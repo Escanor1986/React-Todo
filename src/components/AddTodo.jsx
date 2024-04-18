@@ -1,10 +1,10 @@
-import { useState } from "react";
-// import { DebounceInput } from "react-debounce-input";
-import PropTypes from "prop-types";
+import { useContext, useState } from "react";
 import Button from "./Button";
+import { todoDispatcherContext } from "../context/todoContext";
 
-function AddTodo({ addTodo }) {
+function AddTodo() {
   const [value, setValue] = useState("");
+  const dispatch = useContext(todoDispatcherContext);
 
   function handleChange(e) {
     const inputValue = e.target.value;
@@ -13,14 +13,20 @@ function AddTodo({ addTodo }) {
 
   function handleKeyDown(e) {
     if (e.key === "Enter" && value.length) {
-      addTodo(value);
+      dispatch({
+        type: "ADD_TODO",
+        content: value,
+      });
       setValue("");
     }
   }
 
   function handleClick() {
     if (value.length) {
-      addTodo(value);
+      dispatch({
+        type: "ADD_TODO",
+        content: value,
+      });
       setValue("");
     }
   }
@@ -40,9 +46,5 @@ function AddTodo({ addTodo }) {
     </div>
   );
 }
-
-AddTodo.propTypes = {
-  addTodo: PropTypes.func.isRequired,
-};
 
 export default AddTodo;

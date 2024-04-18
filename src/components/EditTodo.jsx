@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "./Button";
+import { todoDispatcherContext } from "../context/todoContext";
 
-export default function EditTodo({ todo, editTodo, cancelEditTodo }) {
+export default function EditTodo({ todo, cancelEditTodo }) {
   const [value, setValue] = useState(todo.content);
+  const dispatch = useContext(todoDispatcherContext);
 
   function handleChange(e) {
     const inputValue = e.target.value;
@@ -12,14 +14,22 @@ export default function EditTodo({ todo, editTodo, cancelEditTodo }) {
 
   function handleKeyDown(e) {
     if (e.key === "Enter" && value.length) {
-      editTodo(value);
+      dispatch({
+        type: "EDIT_TODO",
+        id: todo.id,
+        content: value,
+      });
       setValue("");
     }
   }
 
   function handleClick() {
     if (value.length) {
-      editTodo(value);
+      dispatch({
+        type: "EDIT_TODO",
+        id: todo.id,
+        content: value,
+      });
       setValue("");
     }
   }
@@ -56,6 +66,5 @@ export default function EditTodo({ todo, editTodo, cancelEditTodo }) {
 
 EditTodo.propTypes = {
   todo: PropTypes.object,
-  editTodo: PropTypes.func,
   cancelEditTodo: PropTypes.func,
 };

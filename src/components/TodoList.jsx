@@ -1,49 +1,22 @@
+import { useContext } from "react";
 import TodoItem from "./TodoItem";
 import EditTodo from "./EditTodo";
-import PropTypes from "prop-types";
+import { todoStateContext } from "../context/todoContext";
 
-function TodoList({
-  todoList,
-  deleteTodo,
-  toggleTodo,
-  toggleTodoEdit,
-  editTodo,
-  toggleSelectedTodo,
-}) {
-  return todoList.length ? (
+export default function TodoList() {
+  const state = useContext(todoStateContext);
+
+  return state.todoList.length ? (
     <ul>
-      {todoList.map(todo =>
+      {state.todoList.map(todo =>
         todo.edit ? (
-          <EditTodo
-            key={todo.id}
-            todo={todo}
-            editTodo={content => editTodo(todo.id, content)}
-            cancelEditTodo={() => toggleTodoEdit(todo.id)}
-          />
+          <EditTodo key={todo.id} todo={todo} />
         ) : (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            deleteTodo={() => deleteTodo(todo.id)}
-            toggleTodo={() => toggleTodo(todo.id)}
-            toggleTodoEdit={() => toggleTodoEdit(todo.id)}
-            toggleSelectedTodo={() => toggleSelectedTodo(todo.id)}
-          />
+          <TodoItem key={todo.id} todo={todo} />
         )
       )}
     </ul>
   ) : (
-    <p>Aucune todo pour le moment</p>
+    <p>Aucune tâche en cours </p>
   );
 }
-
-TodoList.propTypes = {
-  todoList: PropTypes.array,
-  deleteTodo: PropTypes.func,
-  toggleTodo: PropTypes.func,
-  toggleTodoEdit: PropTypes.func,
-  editTodo: PropTypes.func,
-  toggleSelectedTodo: PropTypes.func,
-};
-
-export default TodoList;

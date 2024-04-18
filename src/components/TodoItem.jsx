@@ -2,18 +2,18 @@ import PropTypes from "prop-types";
 import Button from "./Button";
 import { useContext } from "react";
 import themeContext from "../context/Theme";
+import { todoDispatcherContext } from "../context/todoContext";
 
-function TodoItem({
-  todo,
-  deleteTodo,
-  toggleTodo,
-  toggleTodoEdit,
-  toggleSelectedTodo,
-}) {
+function TodoItem({ todo }) {
+  const dispatch = useContext(todoDispatcherContext);
   const theme = useContext(themeContext);
+
   function handleInput(e) {
     console.log(e.target.checked);
-    toggleSelectedTodo();
+    dispatch({
+      type: "TOGGLE_SELECTED_TODO",
+      id: todo.id,
+    });
   }
 
   return (
@@ -34,7 +34,10 @@ function TodoItem({
         <Button
           onClick={e => {
             e.stopPropagation();
-            toggleTodo();
+            dispatch({
+              type: "TOGGLE_TODO",
+              id: todo.id,
+            });
           }}
           text={!todo.done ? "A Valider" : "Validée"}
           className={"mr-15"}
@@ -42,7 +45,10 @@ function TodoItem({
         <Button
           onClick={e => {
             e.stopPropagation();
-            toggleTodoEdit();
+            dispatch({
+              type: "TOGGLE_EDIT_TODO",
+              id: todo.id,
+            });
           }}
           text={`Modifier`}
           className={"mr-15"}
@@ -50,7 +56,10 @@ function TodoItem({
         <Button
           onClick={e => {
             e.stopPropagation();
-            deleteTodo();
+            dispatch({
+              type: "DELETE_TODO",
+              id: todo.id,
+            });
           }}
           text={`Supprimer`}
           className={"mr-15"}
@@ -66,10 +75,6 @@ function TodoItem({
 
 TodoItem.propTypes = {
   todo: PropTypes.object,
-  deleteTodo: PropTypes.func,
-  toggleTodo: PropTypes.func,
-  toggleTodoEdit: PropTypes.func,
-  toggleSelectedTodo: PropTypes.func,
 };
 
 export default TodoItem;
