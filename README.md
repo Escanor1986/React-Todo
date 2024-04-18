@@ -4,12 +4,17 @@
 
 Cette application TodoList est un exemple simple de gestion des tâches à faire. Elle vous permet d'ajouter, de supprimer, de valider et de modifier des tâches.
 
+## Site live
+
+(https://escanor1986.github.io/React-Todo/)
+
 ## Fonctionnalités
 
 - Ajouter une tâche à faire
 - Supprimer une tâche
 - Valider une tâche
 - Modifier une tâche existante
+- Sélectionner et supprimer plusieurs tâches en même temps
 
 ## Technologies utilisées
 
@@ -59,6 +64,12 @@ todo-list/
 │   │   ├── EditTodo.jsx
 │   │   └── TodoItem.jsx
 │   │   └── TodoList.jsx
+│   │
+│   ├── context/
+│   │   └── Theme.js
+│   │
+│   ├── reducers/
+│   │   └── todoReducer.js
 │   │
 │   ├── styles/
 │   │   └── index.scss
