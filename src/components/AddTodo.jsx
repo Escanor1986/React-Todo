@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import { DebounceInput } from "react-debounce-input";
 import PropTypes from "prop-types";
+import Button from "./Button";
 
 function AddTodo({ addTodo }) {
   const [value, setValue] = useState("");
@@ -32,13 +33,10 @@ function AddTodo({ addTodo }) {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         value={value}
-        placeholder={"Ajouter une todo ->"}
+        placeholder={"Ajouter une todo"}
         className="mr-15 flex-fill"
       />
-
-      <button onClick={handleClick} className="btn btn-primary">
-        Ajouter
-      </button>
+      <Button text={`Ajouter`} onClick={handleClick} />
     </div>
   );
 }

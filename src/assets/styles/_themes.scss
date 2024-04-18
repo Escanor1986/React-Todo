@@ -14,6 +14,12 @@
   border: 2px solid var(--primary);
 }
 
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+  border: 2px solid var(--secondary);
+}
+
 .btn-reverse-primary {
   border: 2px solid var(--primary);
   color: var(--primary);
@@ -29,10 +35,41 @@ input {
   border-radius: 4px;
   border: 1px solid var(--accent);
   padding: 10px 15px;
+  outline: none;
 }
 
-.selectedTodo {
+input::placeholder {
+  color: #333333;
+  font-size: 16px;
+}
+
+.select-style {
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff;
+  color: #333333;
+  outline: none;
+  appearance: none;
+}
+
+.option-style {
+  color: var(--accent);
+  font-size: 16px;
+  font-family: "Arial", sans-serif;
+}
+
+.selectedTodo-primary {
   border: 4px var(--primary) inset;
+  border-radius: 25px;
+  background-color: var(--gray-2);
+  margin: 5px 0;
+}
+
+.selectedTodo-secondary {
+  border: 4px var(--secondary) inset;
   border-radius: 25px;
   background-color: var(--gray-2);
   margin: 5px 0;
@@ -40,4 +77,20 @@ input {
 
 .appDiv {
   background-color: #95afc0;
+}
+
+.span-style {
+  margin-right: 15px;
+  font-size: 16px;
+  color: #333333;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .left {
+    margin-bottom: 20px;
+  }
 }

@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import Button from "./Button";
+import { useContext } from "react";
+import themeContext from "../context/Theme";
 
 function TodoItem({
   todo,
@@ -7,6 +10,7 @@ function TodoItem({
   toggleTodoEdit,
   toggleSelectedTodo,
 }) {
+  const theme = useContext(themeContext);
   function handleInput(e) {
     console.log(e.target.checked);
     toggleSelectedTodo();
@@ -14,28 +18,49 @@ function TodoItem({
 
   return (
     <li
-      className={`d-flex flex-row justify-content-center align-items-center p-20 ${
-        todo.selected ? "selectedTodo" : ""
+      className={`main d-flex flex-row justify-content-center align-items-center p-20 ${
+        todo.selected ? `selectedTodo-${theme}` : ""
       }`}
     >
-      <div className="d-flex flex-fill justify-around">
-        {todo.content} {todo.done && "✅"}
-        <span>
+      <div className="left d-flex flex-fill justify-around">
+        <span className="span-style">{todo.content}</span>
+        <span className="span-style">{todo.done && "✅"}</span>
+        <span className="span-style">
           <i className="fa-regular fa-calendar mr-15"></i>
-          {`Tâche créé le : ${todo.date} hrs`}
+          {`Tâche créée le : ${todo.date} hrs`}
         </span>
       </div>
-      <button onClick={toggleTodo} className="btn btn-primary mr-15">
-        {!todo.done ? "A Valider" : "Validée"}
-      </button>
-      <button onClick={toggleTodoEdit} className="btn btn-primary mr-15">
-        Modifier
-      </button>
-      <button onClick={deleteTodo} className="btn btn-reverse-primary mr-15">
-        Supprimer
-      </button>
-      <label>{!todo.selected ? "Select Todo" : "Todo Selected"}</label>
-      <input onInput={handleInput} type="checkbox" name="selected" />
+      <div className="right d-flex flex-fill justify-content-end">
+        <Button
+          onClick={e => {
+            e.stopPropagation();
+            toggleTodo();
+          }}
+          text={!todo.done ? "A Valider" : "Validée"}
+          className={"mr-15"}
+        />
+        <Button
+          onClick={e => {
+            e.stopPropagation();
+            toggleTodoEdit();
+          }}
+          text={`Modifier`}
+          className={"mr-15"}
+        />
+        <Button
+          onClick={e => {
+            e.stopPropagation();
+            deleteTodo();
+          }}
+          text={`Supprimer`}
+          className={"mr-15"}
+        />
+
+        <label className="label-pt">
+          {!todo.selected ? "Select Todo" : "Todo Selected"}
+        </label>
+        <input onInput={handleInput} type="checkbox" name="selected" />
+      </div>
     </li>
   );
 }

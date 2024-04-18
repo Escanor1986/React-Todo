@@ -2,6 +2,7 @@
 import { useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import themeContext from "./context/Theme";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -11,9 +12,9 @@ function App() {
     const actualDate = new Date();
 
     const options = {
-      weekday: "long",
+      // weekday: "short",
       year: "numeric",
-      month: "long",
+      month: "numeric",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -87,35 +88,57 @@ function App() {
     setTodoToDelete([]);
   }
 
+  const [theme, setTheme] = useState("primary");
+
+  function handleChange(e) {
+    setTheme(e.target.value);
+  }
+
   return (
-    <div
-      className={`d-flex flex-row justify-content-center align-items-center p-20`}
-    >
-      {/* <Articles displayArticle={true} /> */}
-      <div className="flex flex-fill card p-20">
-        <h1 className="mb-20">Todo list</h1>
-        <AddTodo addTodo={addTodo} />
-        <TodoList
-          todoList={todoList}
-          todoToDelete={todoToDelete}
-          deleteTodo={deleteTodo}
-          toggleTodo={toggleTodo}
-          toggleTodoEdit={toggleTodoEdit}
-          editTodo={editTodo}
-          toggleSelectedTodo={toggleSelectedTodo}
-        />
-        {todoToDelete.length > 0 ? (
-          <div className="d-flex flex-fill justify-content-center align-items-center">
-            <button
-              className="selectedTodo p-20 m-15"
-              onClick={deleteAllSelectedTodo}
+    <themeContext.Provider value={theme}>
+      <div
+        className={`d-flex flex-row justify-content-center align-items-center p-20`}
+      >
+        {/* <Articles displayArticle={true} /> */}
+        <div className="flex flex-fill card p-20">
+          <h1 className="mb-20 d-flex flex-row justify-content-center align-items-center">
+            <span className="flex-fill">Todo list</span>
+            <select
+              value={theme}
+              onChange={handleChange}
+              className="select-style"
             >
-              Supprimer les todos sélectionnées
-            </button>
-          </div>
-        ) : null}
+              <option value="primary" className="option-style">
+                Vert
+              </option>
+              <option value="secondary" className="option-style">
+                Bleu
+              </option>
+            </select>
+          </h1>
+          <AddTodo addTodo={addTodo} />
+          <TodoList
+            todoList={todoList}
+            todoToDelete={todoToDelete}
+            deleteTodo={deleteTodo}
+            toggleTodo={toggleTodo}
+            toggleTodoEdit={toggleTodoEdit}
+            editTodo={editTodo}
+            toggleSelectedTodo={toggleSelectedTodo}
+          />
+          {todoToDelete.length > 0 ? (
+            <div className="d-flex flex-fill justify-content-center align-items-center">
+              <button
+                className={`selectedTodo-${theme} p-20 m-15`}
+                onClick={deleteAllSelectedTodo}
+              >
+                Supprimer les todos sélectionnées
+              </button>
+            </div>
+          ) : null}
+        </div>
       </div>
-    </div>
+    </themeContext.Provider>
   );
 }
 
