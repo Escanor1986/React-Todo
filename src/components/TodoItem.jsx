@@ -8,14 +8,6 @@ function TodoItem({ todo }) {
   const dispatch = useContext(todoDispatcherContext);
   const theme = useContext(themeContext);
 
-  function handleInput(e) {
-    console.log(e.target.checked);
-    dispatch({
-      type: "TOGGLE_SELECTED_TODO",
-      id: todo.id,
-    });
-  }
-
   return (
     <li
       className={`main d-flex flex-row justify-content-center align-items-center p-20 ${
@@ -67,7 +59,17 @@ function TodoItem({ todo }) {
       </div>
       <div className="d-flex flex-fill justify-content-center">
         <label>{!todo.selected ? "Select Todo" : "Todo Selected"}</label>
-        <input onInput={handleInput} type="checkbox" name="selected" />
+        <input
+          onInput={e => {
+            e.stopPropagation();
+            dispatch({
+              type: "TOGGLE_SELECTED_TODO",
+              id: todo.id,
+            });
+          }}
+          type="checkbox"
+          name="selected"
+        />
       </div>
     </li>
   );
