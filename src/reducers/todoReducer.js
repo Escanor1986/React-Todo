@@ -1,20 +1,4 @@
 export default function todoReducer(state, action) {
-  const actualDate = new Date();
-  console.log(action);
-
-  const options = {
-    // weekday: "short",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    // timeZoneName: "short",
-  };
-
-  const formatedDate = actualDate.toLocaleDateString("fr-FR", options);
-
   switch (action.type) {
     case "ADD_TODO": {
       return {
@@ -22,27 +6,28 @@ export default function todoReducer(state, action) {
         todoList: [
           ...state.todoList,
           {
-            id: crypto.randomUUID(),
+            _id: action._id, // ID fourni par l'API
             content: action.content,
             edit: false,
             done: false,
             selected: false,
-            date: formatedDate,
+            date: action.date, // Date fournie par l'API
           },
         ],
       };
     }
+
     case "DELETE_TODO": {
       return {
         ...state,
-        todoList: state.todoList.filter(todo => todo.id !== action.id),
+        todoList: state.todoList.filter(todo => todo._id !== action._id),
       };
     }
     case "TOGGLE_TODO": {
       return {
         ...state,
         todoList: state.todoList.map(todo =>
-          todo.id === action.id ? { ...todo, done: !todo.done } : todo
+          todo._id === action._id ? { ...todo, done: !todo.done } : todo
         ),
       };
     }
@@ -50,7 +35,7 @@ export default function todoReducer(state, action) {
       return {
         ...state,
         todoList: state.todoList.map(todo =>
-          todo.id === action.id ? { ...todo, edit: !todo.edit } : todo
+          todo._id === action._id ? { ...todo, edit: !todo.edit } : todo
         ),
       };
     }
@@ -58,7 +43,7 @@ export default function todoReducer(state, action) {
       return {
         ...state,
         todoList: state.todoList.map(todo =>
-          todo.id === action.id
+          todo._id === action._id
             ? { ...todo, edit: false, content: action.content }
             : todo
         ),
@@ -68,12 +53,12 @@ export default function todoReducer(state, action) {
       return {
         ...state,
         todoList: state.todoList.map(todo =>
-          todo.id === action.id ? { ...todo, selected: !todo.selected } : todo
+          todo._id === action._id ? { ...todo, selected: !todo.selected } : todo
         ),
         todoToDelete: state.todoList.filter(todo =>
-          todo.id === action.id && !todo.selected
+          todo._id === action._id && !todo.selected
             ? [...state.todoToDelete, todo]
-            : state.todoToDelete.filter(todo => todo.id !== action.id)
+            : state.todoToDelete.filter(todo => todo._id !== action._id)
         ),
       };
     }
@@ -88,6 +73,28 @@ export default function todoReducer(state, action) {
       return {
         ...state,
         theme: action.name,
+      };
+    }
+    case "FETCH_TODOS_REQUEST": {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+    case "FETCH_TODOS_SUCCESS": {
+      return {
+        ...state,
+        loading: false,
+        todoList: action.todos,
+        error: null,
+      };
+    }
+    case "FETCH_TODOS_FAILURE": {
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
       };
     }
     default: {

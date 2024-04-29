@@ -10,9 +10,9 @@ export default function TodoList() {
     <ul>
       {state.todoList.map(todo =>
         todo.edit ? (
-          <EditTodo key={todo.id} todo={todo} />
+          <EditTodo key={todo._id} todo={todo} />
         ) : (
-          <TodoItem key={todo.id} todo={todo} />
+          <TodoItem key={todo._id} todo={todo} />
         )
       )}
     </ul>

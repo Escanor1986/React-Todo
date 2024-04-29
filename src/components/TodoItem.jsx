@@ -8,6 +8,40 @@ function TodoItem({ todo }) {
   const dispatch = useContext(todoDispatcherContext);
   const theme = useContext(themeContext);
 
+  async function updateTodo() {
+    try {
+      const response = await fetch(`https://restapi.fr/api/todo/${todo._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ done: !todo.done }),
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la mise à jour de la todo");
+      }
+      // Met à jour la todo dans l'état global
+      dispatch({ type: "TOGGLE_TODO", id: todo._id });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la todo :", error);
+    }
+  }
+
+  async function deleteTodo() {
+    try {
+      const response = await fetch(`https://restapi.fr/api/todo/${todo._id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la suppression de la todo");
+      }
+      // Supprime la todo de l'état global
+      dispatch({ type: "DELETE_TODO", id: todo._id });
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la todo :", error);
+    }
+  }
+
   return (
     <li
       className={`main d-flex flex-row justify-content-center align-items-center p-20 ${
@@ -24,49 +58,23 @@ function TodoItem({ todo }) {
       </div>
       <div className="right d-flex flex-fill justify-content-end">
         <Button
-          onClick={e => {
-            e.stopPropagation();
-            dispatch({
-              type: "TOGGLE_TODO",
-              id: todo.id,
-            });
-          }}
+          onClick={updateTodo}
           text={!todo.done ? "A Valider" : "Validée"}
           className={"mr-15"}
         />
         <Button
-          onClick={e => {
-            e.stopPropagation();
-            dispatch({
-              type: "TOGGLE_EDIT_TODO",
-              id: todo.id,
-            });
-          }}
+          onClick={() => dispatch({ type: "TOGGLE_EDIT_TODO", id: todo.id })}
           text={`Modifier`}
           className={"mr-15"}
         />
-        <Button
-          onClick={e => {
-            e.stopPropagation();
-            dispatch({
-              type: "DELETE_TODO",
-              id: todo.id,
-            });
-          }}
-          text={`Supprimer`}
-          className={"mr-15"}
-        />
+        <Button onClick={deleteTodo} text={`Supprimer`} className={"mr-15"} />
       </div>
       <div className="d-flex flex-fill justify-content-center">
         <label>{!todo.selected ? "Select Todo" : "Todo Selected"}</label>
         <input
-          onInput={e => {
-            e.stopPropagation();
-            dispatch({
-              type: "TOGGLE_SELECTED_TODO",
-              id: todo.id,
-            });
-          }}
+          onInput={() =>
+            dispatch({ type: "TOGGLE_SELECTED_TODO", id: todo.id })
+          }
           type="checkbox"
           name="selected"
         />

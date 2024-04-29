@@ -10,10 +10,33 @@ function TodoFeature() {
   const dispatch = useContext(todoDispatcherContext);
   const state = useContext(todoStateContext);
 
-  function deleteAllSelectedTodo() {
-    dispatch({
-      type: "DELETE_ALL_SELECTED_TODO",
-    });
+  // Fonction pour supprimer tous les todos sélectionnés via l'API
+  async function deleteAllSelectedTodo() {
+    try {
+      // Récupère les IDs des todos sélectionnés
+      const selectedTodoIds = state.todoToDelete.map(todo => todo._id);
+      // Envoie une requête DELETE à l'API pour supprimer les todos sélectionnés
+      const response = await fetch(
+        "https://restapi.fr/api/todo/deleteSelected",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ids: selectedTodoIds }), // Envoie les IDs des todos sélectionnés dans le corps de la requête
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Erreur lors de la suppression des todos sélectionnés");
+      }
+      // Met à jour l'état global pour supprimer les todos sélectionnés
+      dispatch({ type: "DELETE_ALL_SELECTED_TODO" });
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression des todos sélectionnés :",
+        error
+      );
+    }
   }
 
   function handleChange(e) {
@@ -44,7 +67,12 @@ function TodoFeature() {
           </select>
         </h1>
         <AddTodo />
-        <TodoList todoToDelete={state.todoToDelete} />
+        {state.loading ? (
+          <p>Chargement en cours</p>
+        ) : (
+          <TodoList todoToDelete={state.todoToDelete} />
+        )}
+
         {state.todoToDelete.length > 0 ? (
           <div className="d-flex flex-fill justify-content-center align-items-center">
             <button
